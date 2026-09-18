@@ -2,7 +2,6 @@ print("BIENVENIDOS A LA CAMARA DEL TESORO")
 print("¡Acabas de ingresar al mejor catálogo de piezas coleccionables!")
 
 parts_inventory = []
-# Set para almacenar categorías únicas
 categories_set = set()
 
 for i in range(1, 2):
@@ -10,13 +9,18 @@ for i in range(1, 2):
     print(f"\nIngresado los datos de la pieza numero {i}")
     name = input("Ingrese su nombre: ")
 
-    # strip() elimina espacios al inicio/final; lower() convierte el texto a minúsculas
     category = input("Ingrese la categoria de la pieza: ").strip().lower()
 
-    price = float(input("Ingrese el precio de la pieza: "))
+    # Validación de precio con while True
+    while True:
+        try:
+            price = float(input("Ingrese el precio de la pieza: "))
+            break
+        except ValueError:
+            print("Error: Ingrese un valor numérico válido.")
 
-    status = input("Selecciona el estado de la pieza: (disponible,reservada,vendido) ").strip().lower()
-    while status not in ["disponible", "reservada", "vendido"]:
+    status = input("Selecciona el estado de la pieza: (disponible,reservada,vendida) ").strip().lower()
+    while status not in ["disponible", "reservada", "vendida"]:
         print("estatus invalido")
         status = input("Selecciona el estado de la pieza: ").strip().lower()
 
@@ -40,7 +44,7 @@ for i in range(1, 2):
     print("Registro exitoso")
 
 selected_view = input(
-    "\n1. Ver todas las piezas  / 2. Ver una pieza individual / 3. Ver categorías / 4. Filtrar por estado: ")
+    "\n1. Ver todas las piezas / 2. Ver una pieza individual / 3. Ver categorías / 4. Filtrar por estado / 5. Filtrar por precio mínimo: ")
 
 if selected_view == "1":
     print("Catalogo completo\n")
@@ -80,7 +84,7 @@ elif selected_view == "4":
     if not status_available:
         print("No hay piezas disponibles")
 
-    print("\nPiezas reservadas ")
+    print("\nPiezas reservadas")
     status_reserved = False
     for item in parts_inventory:
         if item["status"] == "reservada":
@@ -89,7 +93,7 @@ elif selected_view == "4":
     if not status_reserved:
         print("No hay piezas reservadas")
 
-    print("\n Piezas vendidas ")
+    print("\nPiezas vendidas")
     status_sold = False
     for item in parts_inventory:
         if item["status"] == "vendida":
@@ -97,6 +101,27 @@ elif selected_view == "4":
             status_sold = True
     if not status_sold:
         print("No hay piezas vendidas")
+
+elif selected_view == "5":
+    print("\nFiltrar por precio mínimo")
+
+    while True:
+        try:
+            min_price = float(input("Ingrese el precio mínimo: "))
+            break
+        except ValueError:
+            print("Ingrese un valor válido (números).")
+
+    print(f"\nPiezas con precio superior a ${min_price}:")
+    found_items = False
+    for item in parts_inventory:
+        if item["price"] > min_price:
+            print(
+                f"ID: {item['id']} | Nombre: {item['name']} | Categoría: {item['category']} | Precio: ${item['price']}")
+            found_items = True
+
+    if not found_items:
+        print(f"No se encontraron piezas con un precio superior a ${min_price}")
 
 else:
     print("Opcion invalida")
