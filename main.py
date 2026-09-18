@@ -4,29 +4,39 @@ print("¡Acabas de ingresar al mejor catálogo de piezas coleccionables!")
 parts_inventory = []
 categories_set = set()
 
-# Bucle de registro de 1 a 10 (11 no es inclusivo)
 for i in range(1, 11):
 
     print(f"\nIngresando los datos de la pieza número {i}")
-    name = input("Ingrese su nombre: ")
+
+    # Validar que el nombre no esté vacío
+    name = input("Ingrese el nombre de la pieza: ").strip()
+    while not name:
+        print("Error: El nombre no puede estar vacío.")
+        name = input("Ingrese el nombre de la pieza: ").strip()
 
     category = input("Ingrese la categoría de la pieza: ").strip().lower()
 
+    # Validar que sea numérico Y mayor que cero
     while True:
         try:
             price = float(input("Ingrese el precio de la pieza: "))
-            break
+            if price > 0:
+                break
+            else:
+                print("Error: El precio debe ser mayor que cero.")
         except ValueError:
             print("Error: Ingrese un valor numérico válido.")
 
-    status = input("Selecciona el estado de la pieza: (disponible, reservada, vendida) ").strip().lower()
+    # Validar que pertenezca a los estados permitidos
+    status = input("Selecciona el estado de la pieza (disponible, reservada, vendida): ").strip().lower()
     while status not in ["disponible", "reservada", "vendida"]:
-        print("Estatus inválido")
+        print("Estatus inválido.")
         status = input("Selecciona el estado de la pieza: ").strip().lower()
 
+    # Validar que la descripción contenga 'usada' o 'certificada'
     description = input("Ingrese la descripción de la pieza (usada, certificada): ").strip().lower()
     while description not in ["usada", "certificada"]:
-        print("Descripción inválida")
+        print("Descripción inválida.")
         description = input("Ingrese la descripción de la pieza: ").strip().lower()
 
     parts = {
@@ -43,7 +53,6 @@ for i in range(1, 11):
 
     print("Registro exitoso")
 
-# Menú interactivo continuo
 while True:
     print("\nMENÚ PRINCIPAL - CÁMARA DEL TESORO")
     print("1. Ver todas las piezas")
