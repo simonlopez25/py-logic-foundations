@@ -6,12 +6,11 @@ categories_set = set()
 
 for i in range(1, 2):
 
-    print(f"\nIngresado los datos de la pieza numero {i}")
+    print(f"\nIngresando los datos de la pieza número {i}")
     name = input("Ingrese su nombre: ")
 
-    category = input("Ingrese la categoria de la pieza: ").strip().lower()
+    category = input("Ingrese la categoría de la pieza: ").strip().lower()
 
-    # Validación de precio con while True
     while True:
         try:
             price = float(input("Ingrese el precio de la pieza: "))
@@ -19,15 +18,15 @@ for i in range(1, 2):
         except ValueError:
             print("Error: Ingrese un valor numérico válido.")
 
-    status = input("Selecciona el estado de la pieza: (disponible,reservada,vendida) ").strip().lower()
+    status = input("Selecciona el estado de la pieza: (disponible, reservada, vendida) ").strip().lower()
     while status not in ["disponible", "reservada", "vendida"]:
-        print("estatus invalido")
+        print("Estatus inválido")
         status = input("Selecciona el estado de la pieza: ").strip().lower()
 
-    description = input("Ingrese la descripcion de la pieza (Usada,Certificada): ").strip().lower()
+    description = input("Ingrese la descripción de la pieza (usada, certificada): ").strip().lower()
     while description not in ["usada", "certificada"]:
-        print("descripcion invalida")
-        description = input("Ingrese la descripcion de la pieza: ").strip().lower()
+        print("Descripción inválida")
+        description = input("Ingrese la descripción de la pieza: ").strip().lower()
 
     parts = {
         "id": i,
@@ -44,10 +43,11 @@ for i in range(1, 2):
     print("Registro exitoso")
 
 selected_view = input(
-    "\n1. Ver todas las piezas / 2. Ver una pieza individual / 3. Ver categorías / 4. Filtrar por estado / 5. Filtrar por precio mínimo: ")
+    "\n1. Ver todas las piezas / 2. Ver una pieza individual / 3. Ver categorías / 4. Filtrar por estado / 5. Filtrar por precio mínimo / 6. Evaluar reglas del catálogo: "
+)
 
 if selected_view == "1":
-    print("Catalogo completo\n")
+    print("Catálogo completo\n")
     for item in parts_inventory:
         print(f"Identificador: {item['id']}")
         print(f"Nombre: {item['name']}")
@@ -60,17 +60,22 @@ if selected_view == "1":
     print(f"Total de piezas registradas: {len(parts_inventory)}")
 
 elif selected_view == "2":
-    item_position = int(input(f"Ingrese la posicion de la pieza (1 al {len(parts_inventory)}): "))
+    while True:
+        try:
+            item_position = int(input(f"Ingrese la posición de la pieza (1 al {len(parts_inventory)}): "))
+            break
+        except ValueError:
+            print("Error: Ingrese un número entero válido.")
 
     if 1 <= item_position <= len(parts_inventory):
         index = item_position - 1
         print("Detalles de la pieza:")
         print(parts_inventory[index])
     else:
-        print("Posicion fuera del rango")
+        print("Posición fuera del rango")
 
 elif selected_view == "3":
-    print("\nCategorias registradas:")
+    print("\nCategorías registradas:")
     print(f"Categorías únicas: {categories_set}")
     print(f"Total de categorías diferentes: {len(categories_set)}")
 
@@ -116,12 +121,36 @@ elif selected_view == "5":
     found_items = False
     for item in parts_inventory:
         if item["price"] > min_price:
-            print(
-                f"ID: {item['id']} | Nombre: {item['name']} | Categoría: {item['category']} | Precio: ${item['price']}")
+            print(f"ID: {item['id']} | Nombre: {item['name']} | Categoría: {item['category']} | Precio: ${item['price']}")
             found_items = True
 
     if not found_items:
         print(f"No se encontraron piezas con un precio superior a ${min_price}")
 
+elif selected_view == "6":
+    print("\n EVALUACIÓN DE REGLAS LÓGICAS ")
+
+    print("\n Regla de Publicación (Precio > 0 y Disponible)")
+    for item in parts_inventory:
+        can_publish = item["price"] > 0 and item["status"] == "disponible"
+        status_text = "SÍ puede publicarse" if can_publish else "NO puede publicarse"
+        print(f"ID: {item['id']} | Nombre: {item['name']} -> {status_text}")
+
+    print("\n Regla de Revisión (Reservada o Vendida)")
+    for item in parts_inventory:
+        needs_review = item["status"] == "reservada" or item["status"] == "vendida"
+        review_text = "SÍ requiere revisión" if needs_review else "NO requiere revisión"
+        print(f"ID: {item['id']} | Nombre: {item['name']} -> {review_text}")
+
+    print("\n Piezas No Vendidas")
+    found_not_sold = False
+    for item in parts_inventory:
+        if item["status"] != "vendida":
+            print(f"ID: {item['id']} | Nombre: {item['name']} | Estado: {item['status']} | Precio: ${item['price']}")
+            found_not_sold = True
+
+    if not found_not_sold:
+        print("Todas las piezas registradas se encuentran vendidas.")
+
 else:
-    print("Opcion invalida")
+    print("Opción inválida")
