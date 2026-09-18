@@ -4,6 +4,7 @@ print("¡Acabas de ingresar al mejor catálogo de piezas coleccionables!")
 parts_inventory = []
 categories_set = set()
 
+# Bucle de registro de 1 a 10 (11 no es inclusivo)
 for i in range(1, 11):
 
     print(f"\nIngresando los datos de la pieza número {i}")
@@ -42,11 +43,9 @@ for i in range(1, 11):
 
     print("Registro exitoso")
 
-
+# Menú interactivo continuo
 while True:
-    print("\n" + "=" * 50)
-    print("      MENÚ PRINCIPAL - CÁMARA DEL TESORO")
-    print("=" * 50)
+    print("\nMENÚ PRINCIPAL - CÁMARA DEL TESORO")
     print("1. Ver todas las piezas")
     print("2. Ver una pieza individual")
     print("3. Ver categorías")
@@ -55,9 +54,10 @@ while True:
     print("6. Ver precio promedio del catálogo")
     print("7. Evaluar reglas del catálogo")
     print("8. Manipulación de strings")
-    print("9. Salir del programa")
+    print("9. Ver métricas e inventario enumerado")
+    print("10. Salir del programa")
 
-    selected_view = input("\nSeleccione una opción (1-9): ").strip()
+    selected_view = input("\nSeleccione una opción (1-10): ").strip()
 
     if selected_view == "1":
         print("\nCatálogo completo\n")
@@ -142,7 +142,7 @@ while True:
             print(f"No se encontraron piezas con un precio superior a ${min_price}")
 
     elif selected_view == "6":
-        print("\nPRECIO PROMEDIO DEL CATÁLOGO")
+        print("\nPrecio promedio del catálogo")
         if len(parts_inventory) > 0:
             total_sum = sum(item["price"] for item in parts_inventory)
             average_price = total_sum / len(parts_inventory)
@@ -151,7 +151,7 @@ while True:
             print("No hay piezas en el catálogo para calcular el promedio.")
 
     elif selected_view == "7":
-        print("\nEVALUACIÓN DE REGLAS LÓGICAS")
+        print("\nEvaluación de reglas lógicas")
 
         print("\nRegla de Publicación (Precio > 0 y Disponible)")
         for item in parts_inventory:
@@ -177,7 +177,7 @@ while True:
             print("Todas las piezas registradas se encuentran vendidas.")
 
     elif selected_view == "8":
-        print("\nMANIPULACIÓN DE STRINGS")
+        print("\nManipulación de strings")
 
         if len(parts_inventory) > 0:
             sample_item = parts_inventory[0]
@@ -211,6 +211,28 @@ while True:
         print(f"En mayúsculas: '{username_input.strip().upper()}'")
 
     elif selected_view == "9":
+        print("\nMétricas del catálogo")
+
+        available_count = sum(1 for item in parts_inventory if item["status"] == "disponible")
+        reserved_count = sum(1 for item in parts_inventory if item["status"] == "reservada")
+        sold_count = sum(1 for item in parts_inventory if item["status"] == "vendida")
+
+        total_items = len(parts_inventory)
+        total_price_sum = sum(item["price"] for item in parts_inventory)
+        avg_price = (total_price_sum / total_items) if total_items > 0 else 0.0
+
+        print(f"Cantidad de piezas disponibles: {available_count}")
+        print(f"Cantidad de piezas reservadas: {reserved_count}")
+        print(f"Cantidad de piezas vendidas: {sold_count}")
+        print(f"Cantidad total de piezas: {total_items}")
+        print(f"Suma total de los precios: ${total_price_sum:.2f}")
+        print(f"Precio promedio del catálogo: ${avg_price:.2f}")
+
+        print("\nListado de piezas enumeradas")
+        for idx, item in enumerate(parts_inventory, start=1):
+            print(f"{idx}. {item['name']}")
+
+    elif selected_view == "10":
         print("\n¡Gracias por utilizar el catálogo de la Cámara del Tesoro! Hasta pronto.")
         break
 
