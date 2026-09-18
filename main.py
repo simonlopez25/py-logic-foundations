@@ -5,7 +5,7 @@ parts_inventory = []
 "set para almacenar categorías únicas"
 categories_set = set()
 
-for i in range(1, 3):
+for i in range(1, 11):
 
     print(f"\nIngresado los datos de la pieza numero {i}")
     name = input("Ingrese su nombre: ")
@@ -43,8 +43,18 @@ selected_view = input("\n1. Ver todas las piezas / 2. Ver una pieza individual /
 
 if selected_view == "1":
     print("Catalogo completo")
+    print("\n")
     for item in parts_inventory:
-        print(item)
+        print(f"Identificador: {item['id']}")
+        print(f"Nombre: {item['name']}")
+        print(f"Categoría: {item['category']}")
+        print(f"Precio: ${item['price']}")
+        print(f"Estado: {item['status']}")
+        print(f"Descripción: {item['description']}")
+        print("\n")
+
+    print("Informe general de todas las piezas")
+    print(f"Total de piezas registradas: {len(parts_inventory)}")
 
 elif selected_view == "2":
     item_position = int(input(f"Ingrese la posicion del pieza (1 al {len(parts_inventory)}): "))
