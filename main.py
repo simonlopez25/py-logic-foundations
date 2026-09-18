@@ -2,23 +2,28 @@ print("BIENVENIDOS A LA CAMARA DEL TESORO")
 print("¡Acabas de ingresar al mejor catálogo de piezas coleccionables!")
 
 parts_inventory = []
+"set para almacenar categorías únicas"
+categories_set = set()
 
-for i in range(1, 2):
+for i in range(1, 3):
 
     print(f"\nIngresado los datos de la pieza numero {i}")
     name = input("Ingrese su nombre: ")
-    category = input("Ingrese la categoria de la pieza: ")
+
+    # strip() elimina espacios al inicio/final; lower() convierte el texto a minúsculas
+    category = input("Ingrese la categoria de la pieza: ").strip().lower()
+
     price = float(input("Ingrese el precio de la pieza: "))
 
-    status = input("Selecciona el estado de la pieza: (disponible,reservada,vendida) ")
+    status = input("Selecciona el estado de la pieza: (disponible,reservada,vendida) ").strip().lower()
     while status not in ["disponible", "reservada", "vendida"]:
         print("estatus,invalido")
         status = input("Selecciona el estado de la pieza: ")
 
-    description = input("Ingrese la descripcion de la pieza (Usada,Certificada)  ")
+    description = input("Ingrese la descripcion de la pieza (Usada,Certificada)  ").strip().lower()
     while description not in ["usada", "certificada"]:
         print("descripcion,invalido")
-        description = input("descripcion invalido digita la descripcion estipulada: ")
+        description = input("descripcion invalido: ")
 
     parts = {
         "id": i,
@@ -30,9 +35,11 @@ for i in range(1, 2):
     }
 
     parts_inventory.append(parts)
+    categories_set.add(category)
+
     print("Registro exitoso")
 
-selected_view = input("\n1. Ver todas las piezas / 2. Ver una pieza individual: ")
+selected_view = input("\n1. Ver todas las piezas / 2. Ver una pieza individual / 3. Ver categorías: ")
 
 if selected_view == "1":
     print("Catalogo completo")
@@ -48,5 +55,11 @@ elif selected_view == "2":
         print(parts_inventory[index])
     else:
         print("Posicion fuera del rango")
+
+elif selected_view == "3":
+    print("\nCategorias registradas:")
+    print(f"Categorías únicas: {categories_set}")
+    print(f"Total de categorías diferentes: {len(categories_set)}")
+
 else:
     print("Opcion invalido")
