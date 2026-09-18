@@ -43,7 +43,7 @@ for i in range(1, 2):
     print("Registro exitoso")
 
 selected_view = input(
-    "\n1. Ver todas las piezas / 2. Ver una pieza individual / 3. Ver categorías / 4. Filtrar por estado / 5. Filtrar por precio mínimo / 6. Evaluar reglas del catálogo: "
+    "\n1. Ver todas las piezas / 2. Ver una pieza individual / 3. Ver categorías / 4. Filtrar por estado / 5. Filtrar por precio mínimo / 6. Evaluar reglas del catálogo / 7. Manipulación de strings: "
 )
 
 if selected_view == "1":
@@ -128,21 +128,21 @@ elif selected_view == "5":
         print(f"No se encontraron piezas con un precio superior a ${min_price}")
 
 elif selected_view == "6":
-    print("\n EVALUACIÓN DE REGLAS LÓGICAS ")
+    print("\nEVALUACIÓN DE REGLAS LÓGICAS")
 
-    print("\n Regla de Publicación (Precio > 0 y Disponible)")
+    print("\nRegla de Publicación (Precio > 0 y Disponible)")
     for item in parts_inventory:
         can_publish = item["price"] > 0 and item["status"] == "disponible"
         status_text = "SÍ puede publicarse" if can_publish else "NO puede publicarse"
         print(f"ID: {item['id']} | Nombre: {item['name']} -> {status_text}")
 
-    print("\n Regla de Revisión (Reservada o Vendida)")
+    print("\nRegla de Revisión (Reservada o Vendida)")
     for item in parts_inventory:
         needs_review = item["status"] == "reservada" or item["status"] == "vendida"
         review_text = "SÍ requiere revisión" if needs_review else "NO requiere revisión"
         print(f"ID: {item['id']} | Nombre: {item['name']} -> {review_text}")
 
-    print("\n Piezas No Vendidas")
+    print("\nPiezas No Vendidas")
     found_not_sold = False
     for item in parts_inventory:
         if item["status"] != "vendida":
@@ -151,6 +151,39 @@ elif selected_view == "6":
 
     if not found_not_sold:
         print("Todas las piezas registradas se encuentran vendidas.")
+
+elif selected_view == "7":
+    print("\nMANIPULACIÓN DE STRINGS")
+
+    if len(parts_inventory) > 0:
+        sample_item = parts_inventory[0]
+
+        print("\nConcatenación")
+        concatenated_info = "Pieza: " + sample_item["name"] + " | Categoría: " + sample_item["category"] + " | Precio: $" + str(sample_item["price"])
+        print(concatenated_info)
+
+        print("\nInterpolación")
+        interpolated_info = f"Pieza: {sample_item['name']} | Categoría: {sample_item['category']} | Precio: ${sample_item['price']}"
+        print(interpolated_info)
+
+        print("\nReemplazo de texto")
+        original_desc = sample_item["description"]
+        updated_desc = original_desc.replace("usada", "certificada")
+        print(f"Descripción original: {original_desc}")
+        print(f"Descripción modificada: {updated_desc}")
+    else:
+        print("\nNo hay piezas en el inventario para mostrar ejemplos.")
+
+    print("\nConversión de etiquetas")
+    raw_tags = input("Ingrese etiquetas para la pieza separadas por comas (ej. rara,antigua,edicion_limitada): ")
+    tags_list = [tag.strip() for tag in raw_tags.split(",")]
+    print(f"Lista de etiquetas procesadas: {tags_list}")
+
+    print("\nFormato de nombre de usuario")
+    username_input = input("Ingrese su nombre de usuario: ")
+    print(f"Sin espacios al inicio/final: '{username_input.strip()}'")
+    print(f"En minúsculas: '{username_input.strip().lower()}'")
+    print(f"En mayúsculas: '{username_input.strip().upper()}'")
 
 else:
     print("Opción inválida")
